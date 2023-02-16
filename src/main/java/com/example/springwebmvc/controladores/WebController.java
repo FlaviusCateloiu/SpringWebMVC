@@ -1,16 +1,18 @@
 package com.example.springwebmvc.controladores;
 
 import com.example.springwebmvc.modelos.Piloto;
+import com.example.springwebmvc.modelos.Usuario;
 import com.example.springwebmvc.servicios.PilotoServicio;
+import com.example.springwebmvc.servicios.UsuarioServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 public class WebController {
+    //MongoDB Pilotos
     @Autowired
     private PilotoServicio pilotoServicio;
 
@@ -63,5 +65,53 @@ public class WebController {
     public String eliminarPiloto(@PathVariable String id, Model model) {
         pilotoServicio.deletePiloto(id);
         return "redirect:/pilotos";
+    }
+
+    //H2 Usuario
+    @Autowired
+    private UsuarioServicioImpl usuarioServicio;
+
+    @RequestMapping(value = "/usuarios")
+    public String indexUsuarios(Model model) {
+        model.addAttribute("usuarios", usuarioServicio.findAllUsuarios());
+        return "indexUsuario";
+    }
+
+    @GetMapping(value = "/usuarios/nuevo")
+    public String nuevoUsuario(Model model) {
+        Usuario usuario= new Usuario();
+        model.addAttribute("usuario", usuario);
+        return "createUsuario";
+    }
+
+    @PostMapping(value = "/usuarios")
+    public String guardarUsuario(@ModelAttribute("usuario") Usuario usuario) {
+        usuarioServicio.createUsuario(usuario);
+        return "redirect:/usuarios";
+    }
+
+    @GetMapping(value = "/usuarios/{id}")
+    public String editarUsuario(@PathVariable int id, Model model) {
+        Usuario usuario = usuarioServicio.findUsuario(id);
+        model.addAttribute("usuario", usuario);
+        return "updateUsuario";
+    }
+
+    @PostMapping(value = "/usuarios/{id}")
+    public String actualizarUsuario(@PathVariable int id, @ModelAttribute("usuario") Usuario usuario) {
+        Usuario usuarioExistente = usuarioServicio.findUsuario(id);
+
+        usuarioExistente.setId((long) id);
+        usuarioExistente.setNombre(usuario.getNombre());
+        usuarioExistente.setContrasenya(usuario.getContrasenya());
+
+        usuarioServicio.updateUsuario(usuarioExistente);
+        return "redirect:/usuarios";
+    }
+
+    @RequestMapping(value = "/usuarios/delete/{id}")
+    public String eliminarUsuario(@PathVariable int id, Model model) {
+        usuarioServicio.deleteUsuario(id);
+        return "redirect:/usuarios";
     }
 }
