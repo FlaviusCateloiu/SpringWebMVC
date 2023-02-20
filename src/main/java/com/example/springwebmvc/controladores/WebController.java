@@ -5,26 +5,24 @@ import com.example.springwebmvc.modelos.Usuario;
 import com.example.springwebmvc.servicios.PilotoServicio;
 import com.example.springwebmvc.servicios.UsuarioServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class WebController {
-    //MongoDB Pilotos
+
     @Autowired
     private PilotoServicio pilotoServicio;
+    @Autowired
+    private UsuarioServicioImpl usuarioServicio;
 
-    @RequestMapping(value = "/")
+    //MongoDB Pilotos
+
+    @RequestMapping(value = {"/", "/pilotos"})
     public String index(Model model) {
         model.addAttribute("pilotos", pilotoServicio.findAllPilotos());
         return "index";
-    }
-
-    @RequestMapping(value = "/pilotos")
-    public String listaPilotos(Model model) {
-        return "redirect:/";
     }
 
     @GetMapping(value = "/pilotos/nuevo")
@@ -68,8 +66,6 @@ public class WebController {
     }
 
     //H2 Usuario
-    @Autowired
-    private UsuarioServicioImpl usuarioServicio;
 
     @RequestMapping(value = "/usuarios")
     public String indexUsuarios(Model model) {
@@ -101,7 +97,7 @@ public class WebController {
     public String actualizarUsuario(@PathVariable int id, @ModelAttribute("usuario") Usuario usuario) {
         Usuario usuarioExistente = usuarioServicio.findUsuario(id);
 
-        usuarioExistente.setId((long) id);
+        usuarioExistente.setId(id);
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setContrasenya(usuario.getContrasenya());
 

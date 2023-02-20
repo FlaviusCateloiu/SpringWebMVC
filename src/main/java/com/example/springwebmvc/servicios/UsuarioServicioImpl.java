@@ -20,6 +20,10 @@ public class UsuarioServicioImpl {
         return usuarioRepositorio.findById(id).orElse(null);
     }
 
+    public Usuario findByNombreUsuario(String nombre) {
+        return usuarioRepositorio.findByNombre(nombre);
+    }
+
     public Usuario createUsuario(Usuario usuario) {
         return usuarioRepositorio.save(usuario);
     }
