@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("pruebaPilotos")
+@Document("pilotos")
 public class Piloto implements Serializable {
     @Id
     private String id;
