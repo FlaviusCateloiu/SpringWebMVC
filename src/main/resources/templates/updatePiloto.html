@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container-fluid p-5 text-center">
-  <h1>Crear Piloto para la Temporada 2023 de F1</h1>
+  <h1>Actualizar Piloto para la Temporada 2023 de F1</h1>
 </div>
 <div style="text-align: center">
   <form th:action="@{/pilotos/{id} (id=${piloto.id})}" th:object="${piloto}" method="POST">
@@ -24,7 +24,7 @@
     <input id="pais" type="text" name="pais" th:field="*{pais}"><br><br>
     <label for="nacimiento" >Fecha de Nacimiento Piloto: </label>
     <input id="nacimiento" type="date" name="nacimiento" th:field="*{fechaNacimiento}"><br><br>
-    <input type="submit" value="Guardar Piloto">
+    <input type="submit" value="Actualizar Piloto">
   </form>
 </div>
 
